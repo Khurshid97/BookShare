@@ -1,0 +1,1 @@
+var updateBtns = document.getElementsByClassName('uptodate-cart')
