@@ -20,7 +20,7 @@ for (var i=0; i<updateBtns.length; i++) {
 
 function addCookieItem(productId, action){
     if (action == 'add') {
-        console.log(cart)
+        console.log(cart[productId])
         if (cart[productId] == undefined) {
             cart[productId] = {'quantity':1}
             

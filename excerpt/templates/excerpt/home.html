@@ -25,45 +25,54 @@
 
 
     <script type="text/javascript">
-        var user = '{{request.user}}'
-        function getToken(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
+      var user = '{{request.user}}'
+      function getToken(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
         }
         const csrftoken = getToken('csrftoken');
         const csr = JSON.stringify(csrftoken)
 
-      // Never return the cookie as null otherwise you get an error   
-        function getCookie(name) {
-          var cookieArr = document.cookie.split("=");
 
-          for(var i=0; i <cookieArr.length; i++) {
-            var cookiePair = cookieArr[i].split("=");
-
-            if(name == cookiePair[0].trim()) {
-              return decodeURIComponent(cookiePair[1]);
-            }
+      // Never return the cookie as null otherwise you get an error  
+        // get cookie function correct version is here from stackoverflow  // https://stackoverflow.com/questions/4003823/javascript-getcookie-functions
+        function getCookie(c_name) {
+              var c_value = " " + document.cookie;
+              var c_start = c_value.indexOf(" " + c_name + "=");
+              if (c_start == -1) {
+                  c_value = null;
+              }
+              else {
+                  c_start = c_value.indexOf("=", c_start) + 1;
+                  var c_end = c_value.indexOf(";", c_start);
+                  if (c_end == -1) {
+                      c_end = c_value.length;
+                  }
+                  c_value = unescape(c_value.substring(c_start,c_end));
+              }
+              return c_value;
           }
-          return cookiePair;
-        }
+        
 
         var cart = JSON.parse(getCookie('cart'))
 
+        // console.log(cart)
         if(cart == undefined) {
             cart = {}
-            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/" 
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
           }
+
     </script>
 
       </head>
