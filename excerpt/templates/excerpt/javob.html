@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/javob.css'%}">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button1">
+        Assalomu aleykum hurmatli <span style="color: red;">{{request.user}}</span>, sizning buyurtmangiz qabul qilindi. Tez orada siz bilan adminlarimiz bog'lanishadi
+    </button> 
+    <br><br>
+    <a href="{% url 'home'%}"><button>Asosiy betga qaytish</button></a>
+</body>
+</html>

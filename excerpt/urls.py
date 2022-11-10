@@ -20,7 +20,8 @@ from . import views
 urlpatterns = [
     path('', views.homeStore, name='home'),
     path('register/', views.registerPage, name='register'),
-    path('login/', views.loginPage, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
+    path('javoblar/', views.javoblar, name='javoblar'),
     path('cart/', views.cart, name='cart'),
     path('about/', views.about, name='about'),
     path('page/<str:pk>/', views.page, name='page'),

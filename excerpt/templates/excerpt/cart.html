@@ -38,18 +38,24 @@
   }
   const csrftoken = getToken('csrftoken');
 
-  function getCookie(name) {
-          var cookieArr = document.cookie.split("=");
-
-          for(var i=0; i <cookieArr.length; i++) {
-            var cookiePair = cookieArr[i].split("=");
-
-            if(name == cookiePair[0].trim()) {
-              return decodeURIComponent(cookiePair[1]);
-            }
-          }
-          return cookiePair
+  // Never return the cookie as null otherwise you get an error  
+  // get cookie function correct version is here from stackoverflow  // https://stackoverflow.com/questions/4003823/javascript-getcookie-functions
+  function getCookie(c_name) {
+        var c_value = " " + document.cookie;
+        var c_start = c_value.indexOf(" " + c_name + "=");
+        if (c_start == -1) {
+            c_value = null;
         }
+        else {
+            c_start = c_value.indexOf("=", c_start) + 1;
+            var c_end = c_value.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = c_value.length;
+            }
+            c_value = unescape(c_value.substring(c_start,c_end));
+        }
+        return c_value;
+    }
 
   var cart = JSON.parse(getCookie('cart')) 
 
@@ -63,13 +69,13 @@
 <style>
     .gradient-custom {
     /* fallback for old browsers */
-    background: #000000;
+    background: #0000003d;
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgb(0, 0, 0), rgb(0, 0, 0));
+    background: -webkit-linear-gradient(to right, #0000004d, rgba(13, 113, 15, 0.027));
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgb(0, 0, 0), rgb(0, 0, 0))
+    background: linear-gradient(to right, #0000004d, rgba(13, 113, 15, 0.027))
     }
 </style>
 
@@ -82,7 +88,7 @@
 
               <div class="card mb-4">
                 <div class="card-header py-3">
-                  <h5 class="mb-0">Cart - {{cartItems}} items</h5>
+                  <h5 class="mb-0">Savatchada - {{cartItems}} ta mahsulot bor</h5>
                 </div>
                 <div class="card-body">
 
@@ -104,16 +110,11 @@
       
                     <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                       <!-- Data -->
-                      <p><strong>{{item.product.book_name}}</strong></p>
+                      <p><strong name="book_name">{{item.product.book_name}}</strong></p>
                       <p>{{item.product.slug}}</p>
-                      <!--<p>{{item.product.book_name}}</p>-->
                       <button type="button" class="btn btn-primary btn-sm me-1 mb-2 update-cart" data-mdb-toggle="tooltip"
                         title="Remove item" data-product={{item.product.id}} data-action="deleter">
                         <i class="fas fa-trash"></i>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-sm mb-2 update-cart" data-mdb-toggle="tooltip"
-                        title="Move to the wish list" data-product={{item.product.id}} data-action="favorite">
-                        <i class="fas fa-heart"></i>
                       </button>
                       <!-- Data -->
                     </div>
@@ -159,41 +160,30 @@
 
               <div class="card mb-4">
                 <div class="card-body">
-                  <p><strong>Expected shipping delivery</strong></p>
-                  <p class="mb-0">12.10.2020 - 14.10.2020</p>
+                  <p><strong>Hurmatli {{user}}, sotib olish tugmasini bosing va sizning yangi buyurtmangiz qabul qilinadi.</strong></p>
+                  <p class="mb-0">Yetkazib berilish vaqti o'rtacha 5 kun.</p>
                 </div>
               </div>
               <div class="card mb-4 mb-lg-0">
                 <div class="card-body">
-                  <p><strong>We accept</strong></p>
-                  <img class="me-2" width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                    alt="Visa" />
-                  <img class="me-2" width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                    alt="American Express" />
-                  <img class="me-2" width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                    alt="Mastercard" />
+                  <p><strong>Sotib olish tugmasi bosilgach, biz sizga aloqaga chiqamiz, Xaridingiz uchun tashakkur.</strong></p>
+                  <!-- bu yerda online to'lov tizimlar joylanadi -->
                 </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="card mb-4">
                 <div class="card-header py-3">
-                  <h5 class="mb-0">Summary</h5>
+                  <h5 class="mb-0">Xulosa</h5>
                 </div>
                 <div class="card-body">
                   <ul class="list-group list-group-flush">
                     <li
                       class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                      Products
-                      <span>{{order.get_cart_total}} So'm</span>
+                      Ja'mi mahsulotlar soni
+                      <span>{{cartItems}} ta</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                      Manzil
-                      <span>Varzik</span>
-                    </li>
+                    <hr>
                     <li
                       class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                       <div>
@@ -206,14 +196,19 @@
                     </li>
                   </ul>
                   <p></p>
+              <form action="" method="GET">
+                <!-- open up a list and append with the info of products and send it to backend -->
+                <input style="display: none;" type="text" name="finder" value="sleep">
                   <a href="#">
-                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
                       Sotib olish
                     </button>
                   </a>
+                </form>
+
                   <br>
                   <a href="{% url 'home' %}">
-                  <button type="button" class="btn btn-primary btn-lg btn-block">
+                  <button class="btn btn-primary btn-lg btn-block">
                     Asosiy betga qaytish
                   </button>
                 </a>

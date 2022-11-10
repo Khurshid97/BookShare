@@ -37,11 +37,23 @@ def homeStore(request):
     return render(request, 'excerpt/home.html', context)
 
 def cart(request):
+    customer = request.user
+    customer2, created = Customer.objects.get_or_create(first_name=customer)
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items'] 
 
+    if request.method == 'GET':
+        founder = request.GET.get('finder')
+        if founder == 'sleep':  
+            l_item = {}
+            for item in items:
+                l_item[item.product.book_name] = item.quantity
+            # print(founder)
+            if order.get_cart_total > 0:
+                telegram_send.send(messages=[f'Eski xaridor \n Ism: {customer.username} \n Familya: {customer.last_name} \n Email: {customer.email} \n Manzil: {customer2.adres} \n Telefon raqami: {customer2.num} \n Kitob nomi va soni: {l_item} \n Umumiy narx: {order.get_cart_total}'])
+                return redirect('javoblar')
     context = {'items':items, 'order':order, 'cartItems':cartItems}
 
     return render(request, 'excerpt/cart.html', context)
@@ -89,13 +101,12 @@ def registerPage(request):
                 form.save()
                 
                 first_name = form['username'].value()
+                password = form['password1'].value()
                 last_name = form['last_name'].value()
                 mail = form['email'].value()
                 adres = form['adres'].value()
                 numr = form['numr'].value()
-                pochta = form['pochta'].value()
-                ad_info = form['ad_info'].value()
-                customer2, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, email=mail, adres=adres, num=numr, pochta=pochta, ad_info=ad_info)
+                customer2, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, email=mail, adres=adres, num=numr)
                 customer2.save()
 
                 cookieData = cookieCart(request)
@@ -112,9 +123,13 @@ def registerPage(request):
                     )
                     mahsulot_nomi.append([product, item['quantity']])
 
-                telegram_send.send(messages=[f'Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Pochta indeks: {pochta} \n Qoshimcha: {ad_info} \n Kitob nomi va soni: {mahsulot_nomi}'])
-
-                return redirect('login')
+                telegram_send.send(messages=[f'Yangi foydalanuvchi \n Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Kitob nomi va soni: {mahsulot_nomi} \n Umumiy narx: {order.get_cart_total}'])
+                
+                user = authenticate(request, username=first_name, password=password)
+                if user is not None:
+                    login(request, user)
+                    
+                return redirect('javoblar')
             else:
                 print('xatolik')
                 return redirect('register')
@@ -134,7 +149,8 @@ def about(request):
     context = {}
     return render(request, 'excerpt/about.html', context)
 
-
+def javoblar(request):
+    return render(request, 'excerpt/javob.html')
 
 def page(request, pk):
     if request.user.is_authenticated:
@@ -153,22 +169,8 @@ def page(request, pk):
 
     return render(request, 'excerpt/page.html', context)
 
-def loginPage(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')# Redirect to a success page.
-        else:
-            return 'invalid login'
-
-    context = {}
-    return render(request, 'excerpt/login.html', context)
-
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 # Main pages

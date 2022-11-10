@@ -79,14 +79,28 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light white scrolling-navbar" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light white scrolling-navbar fixed-top" id="mainNav">
     <div class="container">
 
       <!-- Brand -->    
       <a class="navbar-brand waves-effect" href="https://t.me/kitobshare" target="_blank">
         <strong class="blue-text">Kitob Share</strong>
       </a>
-
+      {% if user.is_authenticated %}
+            <a class="nav-link waves-effect" href="{% url 'cart' %}" style="background-color: rgba(0, 30, 255, 0.858); border-radius: 5px; box-shadow: 1px -1px black;">
+              <strong style="color: yellow; font-weight: 900;">{{cartItems}}</strong> 
+              <i class="fas fa-shopping-cart" style="color: yellow;"></i>
+              <span style="font-weight: 900; color:  yellow; "> Savatcha</span>
+            </a>
+            <span style="margin-left: 10px; width: 100px; font-weight: 700;">Xush kelibsiz {{user}}</span>
+          {% else %}
+            <a class="nav-link waves-effect" href="{% url 'register' %}" style="background-color: rgba(0, 30, 255, 0.858); border-radius: 5px; box-shadow: 1px -1px black;">
+              <strong style="color: yellow; font-weight: 900;">{{cartItems}}</strong> 
+              <i class="fas fa-shopping-cart" style="color: yellow;"></i>
+              <span style="font-weight: 900; color:  yellow; "> Savatcha</span>
+              <span class="sr-only">(current)</span>
+            </a>
+          {% endif %}
       <!-- Collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
         aria-expanded="false" aria-label="Toggle navigation">
@@ -99,30 +113,15 @@
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link waves-effect" href="{% url 'home' %}">Asosiy bet
+            <a class="nav-link waves-effect" href="#">
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          
         </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'cart' %}">
-              <span class="badge red z-depth-1 mr-1"> 1 </span>
-              <i class="fas fa-shopping-cart"></i><strong style="color: rgb(224, 13, 13);">{{cartItems}}</strong> Cart
-            </a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'register' %}">
-              <span class="badge red z-depth-1 mr-1"> 1 </span>
-              <i class="fas fa-shopping-cart"></i><strong style="color: rgb(224, 13, 13);">{{cartItems}}</strong> Cart
-            </a>
-          </li>
-          {% endif %}
+          
           <li class="nav-item">
             <span class="clearfix d-none d-sm-inline-block">
             <a href="https://www.facebook.com/profile.php?id=100081883069224" class="nav-link waves-effects" target="_blank">
@@ -154,7 +153,7 @@
   <!-- Navbar -->
 
   <!--Main layout-->
-  <main>
+  <main style="margin-top: 70px;">
 
     <div class="container">
 
@@ -183,12 +182,12 @@
           <div class="col-lg-3 col-md-6 mb-4">
             
             <!--Card-->
-            <div class="card">
+            <div class="card" style="height: 550px; overflow: hidden;">
 
               <!--Card image-->
               <div class="view overlay">
                 <a href="{% url 'page' book.id %}">
-                <img src="{{ book.imageURL }}" class="img-fluid imagesize" alt="">
+                <img src="{{ book.imageURL }}" class="img-fluid imagesize" alt="" style="height: 300px;">
               </a>
                   <div class="rgba-white-slight"></div>
                 
@@ -209,8 +208,8 @@
                   <strong>{{book.book_cost}}Sum</strong>
                 </h4>
                 <p>Miqdori {{book.book_amount}} dona</p>
-                <button data-csrft="{{csr}}" data-product="{{book.id}}" data-action="add" class="btn btn-primary update-cart">
-                  Kartaga qo'shish
+                <button data-product="{{book.id}}" data-action="add" class="btn btn-primary update-cart">
+                  <span style="font-weight: 900; color: rgb(253, 244, 1);"> Savatcha</span>ga qo'shish
                 </button>  
                 
 
@@ -249,6 +248,12 @@
       <a class="btn btn-outline-white" href="https://www.google.com/maps/dir//Varzik,+O%60zbekiston/@41.1168049,71.2404462,19z/data=!4m9!4m8!1m0!1m5!1m1!1s0x38a4d700863eb73b:0xb745dd506550791a!2m2!1d71.2408204!2d41.1167363!3e2" target="_blank" role="button">Manzil
         <i class="fas fa-map-marker-alt"></i>
       </a>
+
+      {% if user.is_authenticated %}
+      <a style="font-size: 20px;" class="nav-item nav-link" href="{% url 'logout' %}">
+        Chiqish <i class="fas fa-sign-out-alt"></i>
+      </a>
+      {% endif %}
     </div>
     <!--/.Call to action-->
 

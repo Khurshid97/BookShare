@@ -41,8 +41,6 @@ class Customer(models.Model):
     email = models.CharField(max_length=200, null=True, blank=True)
     adres = models.CharField(max_length=200, null=True)
     num = models.IntegerField(null=True)
-    pochta = models.IntegerField(null=True)
-    ad_info = models.TextField()
     
     def __str__(self):
         return self.first_name

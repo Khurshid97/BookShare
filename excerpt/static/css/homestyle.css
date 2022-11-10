@@ -204,6 +204,9 @@
   #searcher_input {
     width: 77%;
   }
+  #cartItme {
+    float: left;
+  }
 }
 
 
