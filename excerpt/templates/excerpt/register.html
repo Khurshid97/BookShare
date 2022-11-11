@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="UTF">
+    <meta name="viewport" content="width=device-width", initial-scale="1.0">
 <!-- Font Awesome -->
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -313,10 +314,16 @@
 						Sotib olish
 					</button>
 				</form>
-
+              {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red; list-style: none; border: solid; margin-top: 15px; margin-bottom: 0; width: 80%; border-radius: 5px; padding: 5px; font-weight: 900;"> {{ message }}</li>
+                  {% endfor %}
+              </ul>
+              {% endif %}
                   <br>
                   <a href="{% url 'home' %}">
-                  <button type="button" class="btn btn-primary btn-lg btn-block">
+                  <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: -25px;">
                     Asosiy betga qaytish
                   </button>
                 </a>

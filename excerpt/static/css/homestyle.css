@@ -172,7 +172,11 @@
 .topnav .icon {
   display: none;
 }
-
+#welcome {
+  margin-left: 10px; 
+  width: 100px; 
+  font-weight: 700;
+}
 
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
@@ -206,6 +210,28 @@
   }
   #cartItme {
     float: left;
+  }
+  #nav_for {
+  }
+  #brand {
+    margin: 0 3px 0 -5px;
+    font-size: small;
+
+  }
+  #savatcha {
+    margin-left: -17.5px;
+    margin-right: 0;
+    font-size: small;
+    font-weight: 500;
+    padding: 5px;
+  }
+  #welcome {
+    font-size: small;
+    margin-left: -4px;
+  }
+  #toggler {
+    font-size: small;
+    margin-left: -30px;
   }
 }
 

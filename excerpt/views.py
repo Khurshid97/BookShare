@@ -95,44 +95,47 @@ def registerPage(request):
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
-        if request.method == 'POST':
-            form = CreatingUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                
-                first_name = form['username'].value()
-                password = form['password1'].value()
-                last_name = form['last_name'].value()
-                mail = form['email'].value()
-                adres = form['adres'].value()
-                numr = form['numr'].value()
-                customer2, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, email=mail, adres=adres, num=numr)
-                customer2.save()
-
-                cookieData = cookieCart(request)
-                items = cookieData['items']
-
-                mahsulot_nomi = []
-                order = Order.objects.create(customer=customer2, complete=False)
-                for item in items:
-                    product = Book.objects.get(id=item['product']['id'])
-                    orderItem = OrderItem.objects.create(
-                        product=product,
-                        order=order,
-                        quantity=item['quantity']
-                    )
-                    mahsulot_nomi.append([product, item['quantity']])
-
-                telegram_send.send(messages=[f'Yangi foydalanuvchi \n Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Kitob nomi va soni: {mahsulot_nomi} \n Umumiy narx: {order.get_cart_total}'])
-                
-                user = authenticate(request, username=first_name, password=password)
-                if user is not None:
-                    login(request, user)
+        try:
+            if request.method == 'POST':
+                form = CreatingUserForm(request.POST)
+                if form.is_valid():
+                    form.save()
                     
-                return redirect('javoblar')
-            else:
-                print('xatolik')
-                return redirect('register')
+                    first_name = form['username'].value()
+                    password = form['password1'].value()
+                    last_name = form['last_name'].value()
+                    mail = form['email'].value()
+                    adres = form['adres'].value()
+                    numr = form['numr'].value()
+                    customer2, created = Customer.objects.get_or_create(first_name=first_name, last_name=last_name, email=mail, adres=adres, num=numr)
+                    customer2.save()
+
+                    cookieData = cookieCart(request)
+                    items = cookieData['items']
+
+                    mahsulot_nomi = []
+                    order = Order.objects.create(customer=customer2, complete=False)
+                    for item in items:
+                        product = Book.objects.get(id=item['product']['id'])
+                        orderItem = OrderItem.objects.create(
+                            product=product,
+                            order=order,
+                            quantity=item['quantity']
+                        )
+                        mahsulot_nomi.append([product, item['quantity']])
+
+                    telegram_send.send(messages=[f'Yangi foydalanuvchi \n Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Kitob nomi va soni: {mahsulot_nomi} \n Umumiy narx: {order.get_cart_total}'])
+                    
+                    user = authenticate(request, username=first_name, password=password)
+                    if user is not None:
+                        login(request, user)
+                        
+                    return redirect('javoblar')
+                else:
+                    messages.info(request, "Iltimos qayta urunib ko'ring.")
+        except:
+            pass
+
         else:
             data = cartData(request)
             cartItems = data['cartItems']
