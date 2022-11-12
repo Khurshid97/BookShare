@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 body {
     text-align: center;
@@ -25,4 +26,14 @@ button {
     box-shadow: -2px -2px grey, 2px -2px grey;
     background-color: aquamarine;
     font-weight: 800;
+}
+
+@media screen and (max-width: 600px) {
+    #button1 {
+        width: 350px;
+        margin-top: 20%;
+    }
+    button {
+        width: 350px;
+    }
 }

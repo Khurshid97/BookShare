@@ -52,7 +52,10 @@ def cart(request):
                 l_item[item.product.book_name] = item.quantity
             # print(founder)
             if order.get_cart_total > 0:
-                telegram_send.send(messages=[f'Eski xaridor \n Ism: {customer.username} \n Familya: {customer.last_name} \n Email: {customer.email} \n Manzil: {customer2.adres} \n Telefon raqami: {customer2.num} \n Kitob nomi va soni: {l_item} \n Umumiy narx: {order.get_cart_total}'])
+                try:
+                    telegram_send.send(messages=[f'Eski xaridor \n Ism: {customer.username} \n Familya: {customer.last_name} \n Email: {customer.email} \n Manzil: {customer2.adres} \n Telefon raqami: {customer2.num} \n Kitob nomi va soni: {l_item} \n Umumiy narx: {order.get_cart_total}'])
+                except:
+                    pass
                 return redirect('javoblar')
     context = {'items':items, 'order':order, 'cartItems':cartItems}
 
@@ -123,9 +126,10 @@ def registerPage(request):
                             quantity=item['quantity']
                         )
                         mahsulot_nomi.append([product, item['quantity']])
-
-                    telegram_send.send(messages=[f'Yangi foydalanuvchi \n Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Kitob nomi va soni: {mahsulot_nomi} \n Umumiy narx: {order.get_cart_total}'])
-                    
+                    try:
+                        telegram_send.send(messages=[f'Yangi foydalanuvchi \n Ism: {first_name} \n Familya: {last_name} \n Email: {mail} \n Manzil: {adres} \n Telefon raqami: {numr} \n Kitob nomi va soni: {mahsulot_nomi} \n Umumiy narx: {order.get_cart_total}'])
+                    except:
+                        pass                
                     user = authenticate(request, username=first_name, password=password)
                     if user is not None:
                         login(request, user)
