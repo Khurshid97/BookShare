@@ -70,13 +70,13 @@
 <style>
     .gradient-custom {
     /* fallback for old browsers */
-    background: #0000008e;
+    background: to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #0000008e, rgb(0, 0, 0));
+    background: -webkit-linear-gradient(to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue);
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #0000004d, rgba(13, 113, 15, 0.027))
+    background: linear-gradient(to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue)
     }
 
 	.user_card {
@@ -127,10 +127,18 @@
 		box-shadow: none !important;
 		outline: 0px !important;
 	}
-
 </style>
 
 <body>
+    {% if messages %}
+      <div style="position: fixed; width: 100%; margin: 0 5%; z-index: 100; text-align: center;">
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red; list-style: none; border: solid; margin-top: 1px; margin-bottom: 0; width: 80%; border-radius: 5px; padding: 5px; font-weight: 900; font-family:monospace; background-color: rgba(240, 248, 255, 0.5); border: solid yellow;"> {{ message }}</li>
+              {% endfor %}
+          </ul>
+      </div>
+    {% endif %}
     <section class="h-100 gradient-custom">
         <div class="container py-5">
           <div class="row d-flex justify-content-center my-4">
@@ -264,6 +272,12 @@
 						</div>
 						{{form.username}}
 					</div>
+          <div class="input-group mb-1">
+						<div class="input-group-append">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						{{form.first_name}}
+					</div>
 					<div class="input-group mb-1">
 						<div class="input-group-append">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -314,17 +328,10 @@
 						Sotib olish
 					</button>
 				</form>
-              {% if messages %}
-              <ul class="messages">
-                  {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red; list-style: none; border: solid; margin-top: 15px; margin-bottom: 0; width: 80%; border-radius: 5px; padding: 5px; font-weight: 900;"> {{ message }}</li>
-                  {% endfor %}
-              </ul>
-              {% endif %}
-                  <br>
-                  <a href="{% url 'home' %}">
+                  <br><br>
+                <a href="{% url 'home' %}">
                   <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: -25px;">
-                    Asosiy betga qaytish
+                    Asosiy sahifaga qaytish
                   </button>
                 </a>
                 </div>
@@ -349,13 +356,14 @@
 	<script>
 	//Query All input fields
 	var form_fields = document.getElementsByTagName('input')
-	form_fields[1].placeholder='Ism..';
-	form_fields[2].placeholder='Familya..';
-	form_fields[3].placeholder='Email..';
-	form_fields[4].placeholder="Maxfiy so'z yarating...";
-	form_fields[5].placeholder="Maxfiy so'zni qayta kiriting...";
-	form_fields[6].placeholder="Manzil";
-	form_fields[7].placeholder="Telfon raqam";
+	form_fields[1].placeholder="Iltimos o'zingizga taxallus toping";
+  form_fields[2].placeholder='Ism..';
+	form_fields[3].placeholder='Familya..';
+	form_fields[4].placeholder='Email..';
+	form_fields[5].placeholder="Maxfiy so'z yarating...";
+	form_fields[6].placeholder="Maxfiy so'zni qayta kiriting...";
+	form_fields[7].placeholder="Manzil";
+	form_fields[8].placeholder="Telefon raqam";
 
 
 	for (var field in form_fields){	

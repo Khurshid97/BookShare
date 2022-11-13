@@ -71,22 +71,31 @@
 <style>
     .gradient-custom {
     /* fallback for old browsers */
-    background: #0000003d;
+    background: to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #0000004d, rgba(13, 113, 15, 0.027));
+    background: -webkit-linear-gradient(to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue);
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to left, red, blue)
+    background: linear-gradient(to left, red, rgba(255, 0, 0, 0.232), rgba(0, 0, 255, 0.281), blue)
     }
     @media screen and (max-width: 600px) {
     .gradient-custom {
-      background-image: linear-gradient(to left, red, blue);
+      background-image: linear-gradient(to left, red, rgba(0, 0, 0, 0.232), rgba(1, 1, 1, 0.281), blue);
     }
   }
 </style>
 
 <body>
+    {% if messages %}
+      <div style="position: fixed; width: 100%; margin: 0 10%; z-index: 100; text-align: center;">
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: rgb(0, 0, 0); list-style: none; border: solid; margin-top: 5px; margin-bottom: 0; width: 80%; border-radius: 5px; padding: 3px; font-weight: 900; font-family:monospace; background-color: rgba(240, 248, 255, 0.5); border: solid yellow;"> {{ message }}</li>
+              {% endfor %}
+          </ul>
+      </div>
+    {% endif %}
     <section class="h-100 gradient-custom">
         <div class="container py-5">
           <div class="row d-flex justify-content-center my-4">
@@ -217,7 +226,7 @@
                   <br>
                   <a href="{% url 'home' %}">
                   <button class="btn btn-primary btn-lg btn-block">
-                    Asosiy betga qaytish
+                    Asosiy sahifaga qaytish
                   </button>
                 </a>
                 </div>

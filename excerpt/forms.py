@@ -21,5 +21,5 @@ class CreatingUserForm(UserCreationForm):
     # ))
     class Meta:
         model = User
-        fields = ['last_name', 'username', 'email', 'password1', 'password2', 'adres', 'numr']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2', 'adres', 'numr']
 
