@@ -8,9 +8,31 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse
 import json
 import telegram_send
+from django_json_ld.views import JsonLdDetailView
 
 from .utils import cartData, cookieCart
-# Create your views here.
+
+from rest_framework import generics
+from .serializers import BookSerializer, CategorySerializer
+
+class BookListApiView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return BookCreateSerializer
+        return BookSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+class CategoryListApiView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+def robotsView(request):
+    return render(request, 'excerpt/robots.txt')
 
 def homeStore(request):
     data = cartData(request)
@@ -197,4 +219,6 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+class ProductDetailView(JsonLdDetailView):
+    model=Book
 # Main pages

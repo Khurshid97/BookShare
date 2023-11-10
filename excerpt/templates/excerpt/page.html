@@ -2,6 +2,8 @@
 {% load static %}
 <html>
     <head>
+      {% load render_json_ld from json_ld %}
+      {% render_json_ld book.sd %}
       <meta charset="UTF">
       <meta name="viewport" content="width=device-width", initial-scale="1.0">
       <!-- Font Awesome -->

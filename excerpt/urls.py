@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .views import BookListApiView, CategoryListApiView
 
 urlpatterns = [
     path('', views.homeStore, name='home'),
@@ -26,4 +27,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('page/<str:pk>/', views.page, name='page'),
     path('update_item/', views.updateItem, name='update_item'),
+
+    # Your existing URLs
+    path('api/books/', BookListApiView.as_view(), name='book-list-api'),
+    path('api/categories/', CategoryListApiView.as_view(), name='category-list-api'),
 ]

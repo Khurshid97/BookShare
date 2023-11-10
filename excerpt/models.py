@@ -1,8 +1,7 @@
-import email
-from unicodedata import decimal
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
@@ -27,12 +26,24 @@ class Book(models.Model):
         return self.book_name
     
     @property
+    def sd(self):
+        return {
+            "@type": 'Kitob haqida',
+            "name": self.book_name,
+            "description": self.book_desc,
+        }
+
+
+    @property
     def imageURL(self):
         try:
             url = self.book_image.url
         except:
             url = ''
         return url
+    
+    def get_absolute_url(self):
+        return reverse('page', args=[str(self.id)])
 
 
 class Customer(models.Model):
